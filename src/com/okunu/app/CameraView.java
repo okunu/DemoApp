@@ -5,23 +5,35 @@ import android.graphics.Camera;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Scroller;
 
 public class CameraView extends ViewGroup{
 
-    int mWidth;
-    int mHeight;
+	private final static String TAG = "okunu";
+	
+    private int mWidth;
+    private int mHeight;
     //两个view之间的夹角
-    float mAngle = 90;
-    Camera mCamera;
-    Matrix matrix;
-    int mStartScreen = 1;
+    private float mAngle = 90;
+    private Camera mCamera;
+    private Matrix matrix;
+    private int mStartScreen = 1;
+    
+    private Scroller mScroller;
+    private float mDownY = 0f;
+    private int mCurScreen = 1;
+    private VelocityTracker mVelocityTracker;
     
     public CameraView(Context context, AttributeSet attrs) {
         super(context, attrs);
         mCamera = new Camera();
         matrix = new Matrix();
+        mScroller = new Scroller(context);
     }
 
     
@@ -96,4 +108,132 @@ public class CameraView extends ViewGroup{
         canvas.restore();
     }
 
+
+	@Override
+	public boolean onInterceptHoverEvent(MotionEvent event) {
+		return true;
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		int action = event.getAction();
+		switch (action) {
+		case MotionEvent.ACTION_DOWN:
+			if (mVelocityTracker == null) {
+				mVelocityTracker = VelocityTracker.obtain();
+			}
+			mVelocityTracker.addMovement(event);
+			mDownY = event.getY();
+			if (!mScroller.isFinished()) {
+				int currenty = mScroller.getCurrY();
+				mScroller.setFinalY(currenty);
+				mScroller.abortAnimation();
+				scrollTo(0, currenty);
+			}
+			break;
+		case MotionEvent.ACTION_MOVE:
+			mVelocityTracker.addMovement(event);
+			float y = event.getY();
+			float detal = y - mDownY;
+			mDownY = y;
+			//当scroller结束滚动时再响应move事件。
+			if (mScroller.isFinished()) {
+				moveScroll((int)detal);
+			}
+			break;
+		case MotionEvent.ACTION_UP:
+			mVelocityTracker.addMovement(event);
+			mVelocityTracker.computeCurrentVelocity(1000);
+			float vel = mVelocityTracker.getYVelocity();
+//			Log.i(TAG, "vel = " + vel);
+			//y速度值为正则是往下滑动，为负则是往上滑动,以500为界定
+			if (vel >= 500) {
+				moveToNext();
+				//滑动到下一屏
+			}else if (vel <= -500) {
+				//滑动到上一屏
+				moveToPre();
+			}else {
+				//依然在当前屏
+				moveNormal();
+			}
+			mVelocityTracker.clear();
+			mVelocityTracker.recycle();
+			mVelocityTracker = null;
+			break;
+		}
+		return true;
+	}
+	
+	private void moveToPre(){
+		addPreView();
+		int scrolly = getScrollY();
+		//以从第二个view回到第一个view为例，第二个view的滚动距离为scrolly，而第一个view的正常位置则是滚动距离为0
+		//所以从第二个view滚动回第一个view的真正距离就是scrolly，因为是向上，所以为负值
+		int curY = scrolly + mHeight;
+		setScrollY(curY);
+		int detal = -(curY - mHeight);
+		mScroller.startScroll(0, curY, 0, detal,500);
+	}
+	
+	private void moveToNext(){
+		addNextView();
+		int scrolly = getScrollY();
+		int curY = scrolly - mHeight;
+		setScrollY(curY);
+		int detal = mHeight - (curY);
+		mScroller.startScroll(0, curY, 0, detal,500);
+	}
+	
+	private void moveNormal(){
+		int scrolly = getScrollY();
+		int curY = scrolly;
+		int detal = mHeight - curY;
+//		Log.i(TAG, "cury = " + curY + "  detal = " + detal + "  mheight = " + mHeight);
+		mScroller.startScroll(0, curY, 0, detal,500);
+		//此处必须刷新，否则computeScroll不会执行
+		invalidate();
+	}
+	
+	@Override
+	public void computeScroll() {
+		super.computeScroll();
+		if (mScroller.computeScrollOffset()) {
+			scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+//			Log.i(TAG, "cy = " + mScroller.getCurrY());
+			invalidate();
+		}
+	}
+
+	private void moveScroll(int detal){
+//		Log.i(TAG, "scrolly = " + getScrollY());
+		scrollBy(0, detal);
+		//滚动y轴非常有意思，它的值是动态变化的，当第0个view显示完全时scrolly值为0，此时会添加新的一页且index为0
+		//此时view自动调节此时的滚动距离为height高度，因为当前显示的子view，实质上已经是viewgroup的第二个view了
+		if (getScrollY() < 8) {
+			addPreView();
+		}else if (getScrollY() > (getChildCount() - 1)*mHeight - 10) {
+			addNextView();
+		}
+//		Log.i(TAG, "mcurrenty = " + mCurScreen);
+	}
+	
+	//容器内第一个view显示完后需要将最后一个view添加进来，循环显示
+	private void addPreView(){
+		mCurScreen = (mCurScreen - 1 + getChildCount())%getChildCount();
+		int last = getChildCount() - 1;
+		View view = getChildAt(last);
+		removeViewAt(last);
+		addView(view, 0);
+	}
+	
+	//容器的最后一个view显示完后，需要添加新的view进来，循环显示
+	private void addNextView(){
+		mCurScreen = (mCurScreen + 1)%getChildCount();
+		int childCount = getChildCount();
+		View view = getChildAt(0);
+		removeViewAt(0);
+		addView(view, childCount - 1);
+	}
+    
 }
