@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="two_line_textview">
+        <attr name="first_line_textColor" format="color"/>
+        <attr name="second_line_textColor" format="color"/>
+        <attr name="first_line_textSize" format="dimension"/>
+        <attr name="second_line_textSize" format="dimension"/>
+    </declare-styleable>
+</resources>
