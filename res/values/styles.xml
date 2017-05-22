@@ -14,7 +14,6 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:background">@android:color/background_dark</item>
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 

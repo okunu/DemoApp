@@ -1,5 +1,8 @@
 package com.okunu.app;
 
+import com.okunu.app.touch.Touch2Fragment;
+import com.okunu.app.touch.TouchFragment;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -17,7 +20,14 @@ public class FirstActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_first);
         
-        setDefaultFragment(new CameraFragment());
+        //camera示例
+        //setDefaultFragment(new CameraFragment());
+        
+        //外部拦截法
+        //setDefaultFragment(new TouchFragment());
+        
+        //内部拦截法
+        setDefaultFragment(new Touch2Fragment());
     }
     
     public void setDefaultFragment(Fragment fragment){
