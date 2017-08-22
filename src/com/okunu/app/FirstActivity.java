@@ -1,5 +1,7 @@
 package com.okunu.app;
 
+import com.okunu.app.skin.DynamicFragment;
+import com.okunu.app.sync.SyncFragment;
 import com.okunu.app.touch.Touch2Fragment;
 import com.okunu.app.touch.TouchFragment;
 
@@ -20,14 +22,20 @@ public class FirstActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_first);
         
-        //cameraÊ¾Àı
+        //cameraç¤ºä¾‹
         //setDefaultFragment(new CameraFragment());
         
-        //Íâ²¿À¹½Ø·¨
+        //å¤–éƒ¨æ‹¦æˆªæ³•
         //setDefaultFragment(new TouchFragment());
         
-        //ÄÚ²¿À¹½Ø·¨
-        setDefaultFragment(new Touch2Fragment());
+        //å†…éƒ¨æ‹¦æˆªæ³•
+        //setDefaultFragment(new Touch2Fragment());
+        
+        //ConditionVariableç”¨æ³•
+        //setDefaultFragment(new SyncFragment());
+        
+        //åŠ¨æ€åŠ è½½ç›¸å…³
+        setDefaultFragment(new DynamicFragment());
     }
     
     public void setDefaultFragment(Fragment fragment){
