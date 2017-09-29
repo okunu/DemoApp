@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+     >
+     
+    <ImageView
+        android:id="@+id/trace_item_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+         />
+    <TextView
+        android:id="@+id/trace_item_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textSize="20sp"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@id/trace_item_img"
+         />
+    
+</RelativeLayout>

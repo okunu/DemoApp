@@ -61,8 +61,10 @@ public class DynamicFragment extends Fragment implements OnClickListener {
             // mImage.setImageDrawable(mResources.getDrawable(id));
             // mImage.setImageDrawable(mResources.getDrawable(android.R.drawable.dark_header));
         } else if (v.getId() == R.id.dynamic_theme_btn) {
-            int id = mTail.getImageId();
-            mImage.setImageDrawable(mResources.getDrawable(id));
+            if (mTail != null) {
+                int id = mTail.getImageId();
+                mImage.setImageDrawable(mResources.getDrawable(id));
+            }
         }
     }
 
@@ -83,8 +85,8 @@ public class DynamicFragment extends Fragment implements OnClickListener {
 
     public void getTail() {
         getPluginDir();
-        DexClassLoader loader = new DexClassLoader(mPluginDir, getActivity().getApplicationInfo().dataDir, null, getClass().getClassLoader());
         try {
+            DexClassLoader loader = new DexClassLoader(mPluginDir, getActivity().getApplicationInfo().dataDir, null, getClass().getClassLoader());
             String dex = getActivity().getDir("dex", 0).getAbsolutePath();
             String data = getActivity().getApplicationInfo().dataDir;
             Log.i("okunu", "dex = " + dex + "  data = " + data);

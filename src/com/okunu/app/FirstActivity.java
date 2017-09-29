@@ -1,5 +1,6 @@
 package com.okunu.app;
 
+import com.okunu.app.optimize.TraceViewFragment;
 import com.okunu.app.skin.DynamicFragment;
 import com.okunu.app.sync.SyncFragment;
 import com.okunu.app.touch.Touch2Fragment;
@@ -10,6 +11,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.os.Debug;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -35,9 +37,19 @@ public class FirstActivity extends Activity {
         //setDefaultFragment(new SyncFragment());
         
         //动态加载相关
-        setDefaultFragment(new DynamicFragment());
+        //setDefaultFragment(new DynamicFragment());
+        
+        //traceview优化相关
+        setDefaultFragment(new TraceViewFragment());
+//        Debug.startMethodTracing("demo");
     }
-    
+
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        Debug.stopMethodTracing();
+//    }
+
     public void setDefaultFragment(Fragment fragment){
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
