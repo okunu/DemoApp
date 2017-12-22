@@ -37,10 +37,10 @@ public class FirstActivity extends Activity {
         //setDefaultFragment(new SyncFragment());
         
         //动态加载相关
-        //setDefaultFragment(new DynamicFragment());
+        setDefaultFragment(new DynamicFragment());
         
         //traceview优化相关
-        setDefaultFragment(new TraceViewFragment());
+        //setDefaultFragment(new TraceViewFragment());
 //        Debug.startMethodTracing("demo");
     }
 

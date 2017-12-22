@@ -5,14 +5,17 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import com.okunu.app.R;
+import com.okunu.plugin.IPluginProxy;
 import com.okunu.plugin.ITail;
 
 import dalvik.system.DexClassLoader;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -22,8 +25,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+/**
+ * 此类演示获取插件资源为宿主使用,图片一类
+ * @author oukun.ok
+ */
 public class DynamicFragment extends Fragment implements OnClickListener {
 
     ImageView mImage;
@@ -31,19 +40,29 @@ public class DynamicFragment extends Fragment implements OnClickListener {
     ITail mTail;
     String mPluginDir;
     Resources mResources;
-
+    
+    FrameLayout mPluginLayout;
+    TextView mHostText;
+    
+    Context mPluginContext;
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dynamic_layout, container, false);
         mImage = (ImageView) view.findViewById(R.id.dynamic_img);
         mOriBtn = (Button) view.findViewById(R.id.dynamic_origin_btn);
         mThemeBtn = (Button) view.findViewById(R.id.dynamic_theme_btn);
+        mPluginLayout = (FrameLayout)view.findViewById(R.id.plugin_layout);
+        mHostText = (TextView)view.findViewById(R.id.host_text);
         mOriBtn.setOnClickListener(this);
         mThemeBtn.setOnClickListener(this);
 
-        getTail();
+        mPluginContext = createContext(getActivity(),"com.okunu.demoplugin");
+        getPluginDir();
+//        getTail();
+        getTail2(mPluginContext);
         loadRes();
-
+        
         return view;
     }
 
@@ -52,6 +71,8 @@ public class DynamicFragment extends Fragment implements OnClickListener {
         if (v.getId() == R.id.dynamic_origin_btn) {
             int id = R.drawable.man;
             mImage.setImageResource(id);
+            mHostText.setVisibility(View.VISIBLE);
+            mPluginLayout.removeViewAt(1);
             /*
              * addAssetPath.invoke(assetManager,
              * getActivity().getApplicationInfo().sourceDir);
@@ -64,8 +85,21 @@ public class DynamicFragment extends Fragment implements OnClickListener {
             if (mTail != null) {
                 int id = mTail.getImageId();
                 mImage.setImageDrawable(mResources.getDrawable(id));
+                
+                View view = mTail.getView(mPluginContext);
+                mHostText.setVisibility(View.GONE);
+                mPluginLayout.addView(view, 1);
             }
         }
+    }
+    
+    public Context createContext(Context context, String packageName){
+        try {
+            return context.createPackageContext(packageName, Context.CONTEXT_IGNORE_SECURITY | Context.CONTEXT_INCLUDE_CODE);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return context;
     }
 
     public void loadRes() {
@@ -84,7 +118,6 @@ public class DynamicFragment extends Fragment implements OnClickListener {
     }
 
     public void getTail() {
-        getPluginDir();
         try {
             DexClassLoader loader = new DexClassLoader(mPluginDir, getActivity().getApplicationInfo().dataDir, null, getClass().getClassLoader());
             String dex = getActivity().getDir("dex", 0).getAbsolutePath();
@@ -100,6 +133,18 @@ public class DynamicFragment extends Fragment implements OnClickListener {
             // Log.i("okunu", "id = " + id);
         } catch (Exception e) {
             Log.i("okunu", "e", e);
+            e.printStackTrace();
+        }
+    }
+    
+    public void getTail2(Context pluginContext){
+        try {
+            Class clazz = pluginContext.getClassLoader().loadClass("com.okunu.demoplugin.TailImpl");
+            Constructor<?> localConstructor = clazz.getConstructor(new Class[] {});
+            Object obj = localConstructor.newInstance(new Object[] {});
+            mTail = new IPluginProxy(clazz, obj);
+        } catch (Exception e) {
+            Log.i("okunu", "ee", e);
             e.printStackTrace();
         }
     }

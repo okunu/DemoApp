@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_content"
     tools:context="com.okunu.app.FirstActivity" >
 
     <ImageView
@@ -11,21 +11,36 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:scaleType="center"
-        android:src="@drawable/man"
-         />
-    <Button 
+        android:src="@drawable/man" />
+
+    <Button
         android:id="@+id/dynamic_origin_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="origin"
-        />
-    <Button 
+        android:text="origin" />
+
+    <Button
         android:id="@+id/dynamic_theme_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@id/dynamic_origin_btn"
-        android:text="theme"
-        />
+        android:text="theme" />
+
+    <FrameLayout
+        android:id="@+id/plugin_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/dynamic_img" >
+
+        <TextView
+            android:id="@+id/host_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/app_name" />
+    </FrameLayout>
+
 </RelativeLayout>
