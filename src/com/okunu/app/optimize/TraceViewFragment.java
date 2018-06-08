@@ -65,8 +65,8 @@ public class TraceViewFragment extends Fragment{
     };
     
     public void initRes(){
-        resData = new ArrayList<>();
-        strData = new ArrayList<>();
+        resData = new ArrayList<Integer>();
+        strData = new ArrayList<String>();
         for (int i = 0; i < 30; i++) {
             resData.add(R.drawable.ic_launcher);
             strData.add("" + i);
@@ -88,8 +88,8 @@ public class TraceViewFragment extends Fragment{
     
     class MyAdapter extends BaseAdapter{
         
-        public List<Integer> data = new ArrayList<>();
-        public List<String> strings = new ArrayList<>();
+        public List<Integer> data = new ArrayList<Integer>();
+        public List<String> strings = new ArrayList<String>();
         
         public void setData(List<Integer> data, List<String> strs){
             this.data = data;

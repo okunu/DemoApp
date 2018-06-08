@@ -5,6 +5,7 @@ import com.okunu.app.skin.DynamicFragment;
 import com.okunu.app.sync.SyncFragment;
 import com.okunu.app.touch.Touch2Fragment;
 import com.okunu.app.touch.TouchFragment;
+import com.okunu.cache.CacheFragment;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -37,11 +38,14 @@ public class FirstActivity extends Activity {
         //setDefaultFragment(new SyncFragment());
         
         //动态加载相关
-        setDefaultFragment(new DynamicFragment());
+        //setDefaultFragment(new DynamicFragment());
         
         //traceview优化相关
         //setDefaultFragment(new TraceViewFragment());
 //        Debug.startMethodTracing("demo");
+        
+        //图片缓存
+        setDefaultFragment(new CacheFragment());
     }
 
 //    @Override

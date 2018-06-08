@@ -19,7 +19,7 @@ public class IPluginProxy implements ITail{
         try {
             Method method = clazz.getDeclaredMethod("getImageId");
             method.setAccessible(true);
-            return (int) method.invoke(proxy);
+            return (Integer) method.invoke(proxy);
         } catch (Exception e) {
             e.printStackTrace();
         }

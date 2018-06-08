@@ -21,9 +21,9 @@ import android.widget.TextView;
  */
 public class Touch2Fragment extends Fragment{
 
-    ArrayList<String> mData1 = new ArrayList<>();
-    ArrayList<String> mData2 = new ArrayList<>();
-    ArrayList<String> mData3 = new ArrayList<>();
+    ArrayList<String> mData1 = new ArrayList<String>();
+    ArrayList<String> mData2 = new ArrayList<String>();
+    ArrayList<String> mData3 = new ArrayList<String>();
     public void prepareData(){
         for (int i = 0; i < 20; i++) {
             mData1.add("第一页  " + i);
@@ -39,17 +39,17 @@ public class Touch2Fragment extends Fragment{
         HorizontalEx2 root = new HorizontalEx2(getActivity());
         
         ListViewEx listView1 = new ListViewEx(getActivity());
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mData1);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mData1);
         listView1.setAdapter(adapter1);
         listView1.setGroup(root);
         
         ListViewEx listView2 = new ListViewEx(getActivity());
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mData2);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mData2);
         listView2.setAdapter(adapter2);
         listView2.setGroup(root);
         
         ListViewEx listView3 = new ListViewEx(getActivity());
-        ArrayAdapter<String> adapter3 = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mData3);
+        ArrayAdapter<String> adapter3 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mData3);
         listView3.setAdapter(adapter3);
         listView3.setGroup(root);
         
