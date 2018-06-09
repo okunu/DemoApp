@@ -4,6 +4,6 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     
-    <dimen name="image_thumbnail_width">220dp</dimen>
+    <dimen name="image_thumbnail_width">135dp</dimen>
     <dimen name="image_thumbnail_spacing">10dp</dimen>
 </resources>
