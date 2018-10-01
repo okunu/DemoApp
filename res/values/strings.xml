@@ -5,4 +5,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 	<string name="two_line_demo">但愿人长久\n千里共婵娟</string>
+	<string name="image_btn_text">提取主色值</string>
+	<string name="image_btn_text2">灰度图片</string>
 </resources>

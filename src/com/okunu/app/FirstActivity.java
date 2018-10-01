@@ -5,12 +5,15 @@ import com.okunu.app.skin.DynamicFragment;
 import com.okunu.app.sync.SyncFragment;
 import com.okunu.app.touch.Touch2Fragment;
 import com.okunu.app.touch.TouchFragment;
+import com.okunu.asynchttp.ASyncHttpFragment;
 import com.okunu.cache.CacheFragment;
+import com.okunu.image.ImageFragment;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.graphics.ImageFormat;
 import android.os.Bundle;
 import android.os.Debug;
 import android.view.Menu;
@@ -42,10 +45,16 @@ public class FirstActivity extends Activity {
         
         //traceview优化相关
         //setDefaultFragment(new TraceViewFragment());
-//        Debug.startMethodTracing("demo");
+        //Debug.startMethodTracing("demo");
         
         //图片缓存
-        setDefaultFragment(new CacheFragment());
+        //setDefaultFragment(new CacheFragment());
+        
+        //测试async http网络访问功能
+        //setDefaultFragment(new ASyncHttpFragment());
+        
+        //测试简单的图象算法
+        setDefaultFragment(new ImageFragment());
     }
 
 //    @Override
